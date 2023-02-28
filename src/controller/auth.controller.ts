@@ -37,8 +37,4 @@ async function login (req: Request, res: Response) {
     }
 }
 
-async function logout () {
-    
-}
-
-export { register, login, logout }
+export { register, login }
