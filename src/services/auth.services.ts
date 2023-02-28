@@ -3,6 +3,8 @@ import { Users } from "../models/users.model"
 import jwt, { Secret } from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
+const SECRET_KEY: Secret = "ahmd-anggun"
+
 async function RegisterService(user: IUser) {
     try {
         const data: IUser = {
@@ -14,7 +16,27 @@ async function RegisterService(user: IUser) {
             photo: user.photo ?? ""
         }
 
-        await Users.build(data).save()
+        const checkEmail = Users.findOne({
+            email: user.email
+        })
+
+        if(await checkEmail) {
+            return {
+                errors: 'Email already taken!'
+            }
+        } else {
+            const user = await Users.build(data).save()
+            const token = jwt.sign({ 
+                _id: user._id.toString(),
+                name: user.name
+             }, SECRET_KEY, {
+                expiresIn: '2 days'
+            })
+
+            return {
+                user, token
+            }
+        }
     } catch (error) {
         throw error
     }
@@ -33,7 +55,6 @@ async function LoginService(user: IUser) {
         }
 
         const isMatch = bcrypt.compareSync(user.password, checkUser.password)
-        const SECRET_KEY: Secret = "ahmd-anggun"
 
         if(isMatch) {
             const token = jwt.sign({ 
@@ -45,7 +66,7 @@ async function LoginService(user: IUser) {
 
             return {
                 user: checkUser,
-                token: token
+                token
             }
         } else {
             return {

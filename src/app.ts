@@ -5,13 +5,13 @@ import mongoose from "mongoose"
 import cors from "cors"
 
 const app = express()
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Routing
 app.use(router)
-app.use(cors())
 
 mongoose.set('strictQuery', true)
 mongoose.connect("mongodb://localhost:27017/tweeter", () => {

@@ -4,7 +4,7 @@ import { auth } from "../middleware/auth"
 
 const router = express.Router()
 
-router.get('/', auth, (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
     res.status(200).json({
         status: true,
         message: 'Welcome to tweeter API'

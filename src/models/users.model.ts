@@ -16,10 +16,12 @@ const usersSchema: Schema<IUser> = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     photo: {
         type: String
