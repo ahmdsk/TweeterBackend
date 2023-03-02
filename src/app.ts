@@ -3,6 +3,8 @@ import bodyParser from "body-parser"
 import router from "./routes/router"
 import mongoose from "mongoose"
 import cors from "cors"
+import dotenv from "dotenv"
+dotenv.config()
 
 const app = express()
 app.use(cors())

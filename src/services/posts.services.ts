@@ -18,4 +18,12 @@ async function GetUserPostService(id: string): Promise<IPosts[]> {
     }
 }
 
-export { GetPostService, GetUserPostService }
+async function AddPostService(params: object) {
+    try {
+        return await new Posts(params).save()
+    } catch (error) {
+        throw error
+    }
+}
+
+export { GetPostService, GetUserPostService, AddPostService }

@@ -11,7 +11,8 @@ const postsSchema: Schema<IPosts> = new Schema({
     },
     access: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     },
     photos: {
         type: Array

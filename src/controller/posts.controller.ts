@@ -1,5 +1,8 @@
 import { Request, Response } from "express"
-import { GetPostService, GetUserPostService } from "../services/posts.services"
+import { AddPostService, GetPostService, GetUserPostService } from "../services/posts.services"
+import jwt, { JwtPayload, Secret } from "jsonwebtoken"
+
+const SECRET_KEY: Secret = "ahmd-anggun"
 
 async function posts(req: Request, res: Response) {
     const posts = await GetPostService()
@@ -36,12 +39,34 @@ async function userPost(req: Request, res: Response) {
 }
 
 async function addPost(req: Request, res: Response) {
-    console.log(req.body)
+    const headerToken = req.headers.authorization
+    const token = headerToken?.split(' ')[1]
 
-    res.status(200).json({
-        status: true,
-        message: 'Post has been uploaded'
-    })
+    if(token != null) {
+        const decodeToken = jwt.verify(token, SECRET_KEY) as JwtPayload
+        const userId = decodeToken?._id
+        const { posts, access } = req.body
+
+        const addPost = await AddPostService({
+            user: userId,
+            posts,
+            access
+        })
+
+        if(addPost) {
+            res.status(200).json({
+                status: true,
+                message: 'Post Has Been Uploaded',
+                data: addPost
+            })
+        } else {
+            res.status(500).json({
+                status: false,
+                message: 'Post Cannot Be Upload'
+            })
+        }
+    }
+
 }
 
 export { posts, userPost, addPost }
