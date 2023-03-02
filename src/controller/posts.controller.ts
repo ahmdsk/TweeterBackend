@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { AddPostService, GetPostService, GetUserPostService } from "../services/posts.services"
 import jwt, { JwtPayload, Secret } from "jsonwebtoken"
+import { Users } from "../models/users.model"
 
 const SECRET_KEY: Secret = "ahmd-anggun"
 
@@ -22,18 +23,26 @@ async function posts(req: Request, res: Response) {
 }
 
 async function userPost(req: Request, res: Response) {
-    const user_post = await GetUserPostService(req.params.id)
+    try {
+        const checkUser = await Users.findById(req.params.id)
+        const userPost = await GetUserPostService(checkUser._id)
 
-    if(user_post.length > 0) {
-        res.status(200).json({
-            status: true,
-            message: `Get Post By Id User ${req.params.id}`,
-            data: user_post
-        })
-    } else {
+        if(userPost.length > 0) {
+            res.status(200).json({
+                status: true,
+                message: `Get Post By User ${checkUser.name}`,
+                data: userPost
+            })
+        } else {
+            res.status(404).json({
+                status: false,
+                message: `User hasn't posted anything yet`
+            })
+        }
+    } catch (error) {
         res.status(404).json({
             status: false,
-            message: `User hasn't posted anything yet`
+            message: 'User Or Posts Not Found'
         })
     }
 }
