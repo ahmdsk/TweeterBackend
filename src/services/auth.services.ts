@@ -49,7 +49,7 @@ async function LoginService(user: IUser) {
         })
 
         if(!checkUser) {
-            return {
+            throw {
                 errors: 'Email not found'
             }
         }
@@ -65,11 +65,10 @@ async function LoginService(user: IUser) {
             })
 
             return {
-                user: checkUser,
                 token
             }
         } else {
-            return {
+            throw {
                 errors: 'Password is incorrect' 
             }
         }
