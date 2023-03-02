@@ -1,6 +1,8 @@
+import { ObjectId } from "mongoose";
+import { IPosts } from "../interface/PostsInterface";
 import { Posts } from "../models/posts.model";
 
-async function GetPostService(): Promise<any> {
+async function GetPostService(): Promise<IPosts[]> {
     try {
         return await Posts.find().populate("user")
     } catch (error) {
@@ -8,4 +10,12 @@ async function GetPostService(): Promise<any> {
     }
 }
 
-export { GetPostService }
+async function GetUserPostService(id: string): Promise<IPosts[]> {
+    try {
+        return await Posts.find({user: id}).populate("user")
+    } catch (error) {
+        throw error
+    }
+}
+
+export { GetPostService, GetUserPostService }
