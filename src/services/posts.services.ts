@@ -4,7 +4,7 @@ import { Posts } from "../models/posts.model";
 
 async function GetPostService(): Promise<IPosts[]> {
     try {
-        return await Posts.find().populate("user")
+        return await Posts.find().populate("user", '-password -bio -phone')
     } catch (error) {
         throw error
     }

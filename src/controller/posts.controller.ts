@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { AddPostService, GetPostService, GetUserPostService } from "../services/posts.services"
 import jwt, { JwtPayload, Secret } from "jsonwebtoken"
 import { Users } from "../models/users.model"
+import { IPosts } from "../interface/PostsInterface"
 
 const SECRET_KEY: Secret = "ahmd-anggun"
 
@@ -53,14 +54,19 @@ async function addPost(req: Request, res: Response) {
 
     if(token != null) {
         const decodeToken = jwt.verify(token, SECRET_KEY) as JwtPayload
-        const userId = decodeToken?._id
-        const { posts, access } = req.body
+        const user = decodeToken?._id
 
-        const addPost = await AddPostService({
-            user: userId,
-            posts,
-            access
-        })
+        const { posts, access }: IPosts = req.body
+        const photos = req.files as Express.Multer.File[]
+        const finalPhotos: string[] = []
+
+        if(photos != null) {
+            photos.map((pict: { filename: string }) => {
+                finalPhotos.push(pict.filename)
+            })
+        }
+
+        const addPost = await AddPostService({ user, posts, access, photos: finalPhotos })
 
         if(addPost) {
             res.status(200).json({
@@ -78,4 +84,12 @@ async function addPost(req: Request, res: Response) {
 
 }
 
-export { posts, userPost, addPost }
+function editPost(req: Request, res: Response) {
+    console.log(req.params.postid)
+    res.status(200).json({
+        status: true,
+        message: 'Edit Post Successfully'
+    })
+}
+
+export { posts, userPost, addPost, editPost }
