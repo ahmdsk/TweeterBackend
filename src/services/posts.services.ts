@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import { IPosts } from "../interface/PostsInterface";
 import { Posts } from "../models/posts.model";
 
