@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { upload } from "../config/multer";
+import { upload } from "../config/uploader";
 import { login, register } from "../controller/auth.controller";
 import {
   addPost,
