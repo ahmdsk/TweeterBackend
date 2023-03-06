@@ -3,7 +3,7 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, path.join(__dirname, "../../uploads"));
+    cb(null, path.join(__dirname, "../../uploads/profile"));
   },
   filename: function (req, file, cb) {
     cb(
@@ -13,4 +13,4 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({ storage: storage });
+export const UploadProfile = multer({ storage: storage });

@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
-import { upload } from "../config/uploader";
+import multer from "multer";
+import { PostUploader } from "../config/PostUploader";
+import { UploadProfile } from "../config/UploadProfile";
 import { login, register } from "../controller/auth.controller";
 import {
   addPost,
@@ -7,6 +9,7 @@ import {
   posts,
   userPost,
 } from "../controller/posts.controller";
+import { editProfile, profile } from "../controller/users.controller";
 import { auth } from "../middleware/auth";
 
 const router = express.Router();
@@ -26,6 +29,10 @@ router.post("/login", login);
 router.get("/posts", posts);
 router.get("/posts/:id", userPost);
 router.put("/posts/:postid", editPost);
-router.post("/posts", auth, upload.any(), addPost);
+router.post("/posts", auth, PostUploader.any(), addPost);
+
+// Profile
+router.get("/profile/:id", profile)
+router.post("/profile/:id", UploadProfile.single('photo'), editProfile)
 
 export default router;
