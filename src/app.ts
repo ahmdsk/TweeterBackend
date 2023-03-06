@@ -14,6 +14,9 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+// Static File
+app.use('/uploads', express.static('uploads'))
+
 // Routing
 app.use(router)
 
