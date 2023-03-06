@@ -10,7 +10,7 @@ async function RegisterService(user: IUser) {
         const data: IUser = {
             name: user.name,
             phone: user.phone,
-            email: user.email,
+            email: user.email.toLowerCase(),
             password: user.password,
             bio: user.bio ?? "",
             photo: user.photo ?? ""
@@ -45,7 +45,7 @@ async function RegisterService(user: IUser) {
 async function LoginService(user: IUser) {
     try {
         const checkUser = await Users.findOne({
-            email: user.email
+            email: user.email.toLowerCase()
         })
 
         if(!checkUser) {
