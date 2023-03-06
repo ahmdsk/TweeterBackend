@@ -39,7 +39,7 @@ async function editProfile(req: Request, res: Response) {
 
         if(profile) {
             try {
-                await EditProfileService(profile.id, newProfile)
+                await EditProfileService(profile._id, newProfile)
                 res.status(200).json({
                     status: true,
                     message: 'Update Profile Successfully',
